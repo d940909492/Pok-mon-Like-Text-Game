@@ -26,6 +26,10 @@ router.post("/:trainer_id/starter", async (req, res) => {
       trainer_id: req.params.trainer_id,
     });
 
+    if (!trainer) {
+      return res.status(404).json({ message: "Trainer not found" });
+    }
+
     if (trainer.has_picked_starter) {
       return res.status(400).json({ message: "Starter already picked" });
     }
@@ -35,7 +39,6 @@ router.post("/:trainer_id/starter", async (req, res) => {
       return res.status(404).json({ message: "Species not found" });
     }
 
-    // Create starter creature
     const starter = {
       id: 1,
       name: species_name,

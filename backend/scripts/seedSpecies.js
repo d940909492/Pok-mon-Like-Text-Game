@@ -1,7 +1,11 @@
 const Species = require("../models/Species");
 
+const isObjectIdish = (schemaPath) => {
+  const inst = schemaPath?.instance || schemaPath?.caster?.instance;
+  return inst === "ObjectId" || inst === "ObjectID";
+};
+
 const species = [
-  // Starter 1 - Fire
   {
     species_name: "Firewolf",
     types: ["Fire"],
@@ -31,8 +35,6 @@ const species = [
     ],
     description: "A wolf-like creature with flames on its tail.",
   },
-
-  // Starter 2 - Water
   {
     species_name: "Aquabird",
     types: ["Water"],
@@ -61,8 +63,6 @@ const species = [
     ],
     description: "A bird creature that controls water.",
   },
-
-  // Starter 3 - Grass
   {
     species_name: "Leafbug",
     types: ["Grass"],
@@ -93,9 +93,24 @@ const species = [
   },
 ];
 
-const seedSpecies = async () => {
-  await Species.insertMany(species);
-  console.log("✓ Species seeded");
+const seedSpecies = async ({ moveById } = {}) => {
+  const movePath = Species.schema.path("move_learning.move");
+  const moveIsObjectId = isObjectIdish(movePath);
+
+  const payload = species.map((s) => {
+    if (!moveIsObjectId || !moveById) return s;
+    return {
+      ...s,
+      move_learning: (s.move_learning || []).map((ml) => ({
+        ...ml,
+        move: moveById[ml.move] || ml.move,
+      })),
+    };
+  });
+
+  const inserted = await Species.insertMany(payload);
+  console.log(`✓ Species seeded (${inserted.length})`);
+  return inserted;
 };
 
 module.exports = seedSpecies;

@@ -1,7 +1,6 @@
 const Move = require("../models/Move");
 
 const moves = [
-  // Normal moves
   {
     move_id: "scratch",
     name: "Scratch",
@@ -21,7 +20,6 @@ const moves = [
     description: "Charges into the target.",
   },
 
-  // Fire moves
   {
     move_id: "ember",
     name: "Ember",
@@ -43,7 +41,6 @@ const moves = [
     description: "Fiery bite attack.",
   },
 
-  // Water moves
   {
     move_id: "water_gun",
     name: "Water Gun",
@@ -63,7 +60,6 @@ const moves = [
     description: "Fires bubbles at the target.",
   },
 
-  // Grass moves
   {
     move_id: "vine_whip",
     name: "Vine Whip",
@@ -83,7 +79,6 @@ const moves = [
     description: "Sharp leaves attack.",
   },
 
-  // Status moves
   {
     move_id: "growl",
     name: "Growl",
@@ -97,8 +92,9 @@ const moves = [
 ];
 
 const seedMoves = async () => {
-  await Move.insertMany(moves);
-  console.log("✓ Moves seeded");
+  const inserted = await Move.insertMany(moves);
+  console.log(`✓ Moves seeded (${inserted.length})`);
+  return inserted;
 };
 
 module.exports = seedMoves;

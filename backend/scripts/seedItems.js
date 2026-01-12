@@ -1,7 +1,6 @@
 const Item = require("../models/Item");
 
 const items = [
-  // Healing
   {
     item_id: "potion",
     name: "Potion",
@@ -21,7 +20,6 @@ const items = [
     description: "Restores 100 HP",
   },
 
-  // Pokeballs
   {
     item_id: "pokeball",
     name: "Poké Ball",
@@ -41,7 +39,6 @@ const items = [
     description: "Better catch rate",
   },
 
-  // Status heals
   {
     item_id: "antidote",
     name: "Antidote",
@@ -52,7 +49,6 @@ const items = [
     description: "Cures poison",
   },
 
-  // Key items
   {
     item_id: "town_map",
     name: "Town Map",
@@ -66,8 +62,9 @@ const items = [
 ];
 
 const seedItems = async () => {
-  await Item.insertMany(items);
-  console.log("✓ Items seeded");
+  const inserted = await Item.insertMany(items);
+  console.log(`✓ Items seeded (${inserted.length})`);
+  return inserted;
 };
 
 module.exports = seedItems;
