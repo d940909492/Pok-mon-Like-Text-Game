@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "build-server": "cd backend && npm install",
+    "build-client": "cd frontend && npm install",
+    "start-server": "cd backend && npm run dev",
+    "start-client": "cd frontend && npm run dev",
+    "build": "npm run build-server && npm run build-client",
+    "start": "concurrently \"npm run start-server\" \"npm run start-client\""
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/nodemailer": "^6.4.15",
+    "concurrently": "^8.2.2"
+  }
+}
